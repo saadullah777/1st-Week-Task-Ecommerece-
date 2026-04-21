@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover minimalist and modern design products at the Modern Design Store.">
+  <title><%= typeof title !== 'undefined' ? title : 'Modern Design Store' %></title>
+  
+  <!-- Preconnect to external font providers for faster loading -->
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'heading': ['Cabinet Grotesk', 'sans-serif'],
+            'mono': ['Space Mono', 'monospace'],
+            'sans': ['DM Sans', 'sans-serif']
+          },
+          colors: {
+            'accent': '#FF3333',
+            'accent-hover': '#CC0000'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    .product-image-hover { overflow: hidden; }
+    .product-image-hover img { transition: transform 500ms ease-out; }
+    .product-image-hover:hover img { transform: scale(1.05); }
+  </style>
+</head>
+<body class="bg-white text-[#111111]">
+  
+  <%- include('partials/header') %>
+  
+  <!-- Main Content -->
+  <main>
+    <%- typeof body !== 'undefined' ? body : '' %>
+  </main>
+  
+  <%- include('partials/footer') %>
+  
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

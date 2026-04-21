@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'heading': ['Cabinet Grotesk', 'sans-serif'],
+            'mono': ['Space Mono', 'monospace'],
+            'sans': ['DM Sans', 'sans-serif']
+          },
+          colors: {
+            'accent': '#FF3333',
+            'accent-hover': '#CC0000'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    .product-image-hover { overflow: hidden; }
+    .product-image-hover img { transition: transform 500ms ease-out; }
+    .product-image-hover:hover img { transform: scale(1.05); }
+  </style>
+</head>
+<body class="bg-white text-[#111111]">
+  
+  <%- include('partials/header') %>
+  
+  <!-- Hero Section -->
+  <section class="relative py-24 md:py-32 border-b border-[#E5E5E5]">
+    <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Hero Text -->
+        <div>
+          <h1 class="font-heading text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none mb-6">
+            MODERN<br/>DESIGN<br/>STORE
+          </h1>
+          <p class="text-lg text-black/60 mb-8 max-w-md">
+            Curated collection of brutalist furniture, minimal tech, and architectural accessories.
+          </p>
+          <div class="flex flex-col md:flex-row gap-4">
+            <a href="/products" class="bg-accent text-white font-mono uppercase tracking-widest text-sm py-4 px-8 hover:bg-accent-hover transition-colors text-center" data-testid="hero-shop-button">
+              SHOP NOW
+            </a>
+            <a href="#featured" class="border border-black bg-transparent text-black font-mono uppercase tracking-widest text-sm py-4 px-8 hover:bg-black hover:text-white transition-colors text-center" data-testid="hero-featured-button">
+              FEATURED
+            </a>
+          </div>
+        </div>
+        
+        <!-- Hero Image -->
+        <div class="product-image-hover">
+          <img src="https://static.prod-images.emergentagent.com/jobs/6ee9a22c-4c66-411a-b127-183c31d12474/images/cc5ec8d9c5dc2efd06233e88ec5e1eb7530db45eb021a55eac760545f9ba32c2.png" alt="Hero Product" class="w-full h-auto" data-testid="hero-image">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Products Section -->
+  <section id="featured" class="py-24 md:py-32">
+    <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+      <div class="mb-12">
+        <h2 class="font-heading text-3xl md:text-4xl font-black tracking-tight uppercase mb-2">FEATURED PRODUCTS</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-black/60">HAND-PICKED SELECTION</p>
+      </div>
+      
+      <!-- Featured Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#E5E5E5] border border-[#E5E5E5]">
+        <% featuredProducts.forEach(product => { %>
+          <a href="/products/<%= product._id %>" class="bg-white p-6 md:p-8 flex flex-col h-full group" data-testid="featured-product-card">
+            <div class="product-image-hover mb-6">
+              <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-64 object-cover" data-testid="product-image">
+            </div>
+            <div class="flex-1">
+              <span class="bg-black text-white font-mono text-xs px-2 py-1 uppercase tracking-wider inline-block mb-3" data-testid="product-category"><%= product.category %></span>
+              <h3 class="font-heading text-xl font-bold tracking-tight mb-2 group-hover:text-accent transition-colors" data-testid="product-name"><%= product.name %></h3>
+              <p class="text-sm text-black/60 mb-4" data-testid="product-description"><%= product.description.substring(0, 80) %>...</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto pt-4 border-t border-[#E5E5E5]">
+              <span class="font-mono text-lg font-bold tracking-tight" data-testid="product-price">$<%= product.price %></span>
+              <span class="font-mono text-xs text-black/60" data-testid="product-stock">STOCK: <%= product.stock %></span>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+  
+  <!-- All Products Preview -->
+  <section class="py-24 md:py-32 bg-[#F9F9F9]">
+    <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+      <div class="mb-12 flex items-end justify-between">
+        <div>
+          <h2 class="font-heading text-3xl md:text-4xl font-black tracking-tight uppercase mb-2">ALL PRODUCTS</h2>
+          <p class="font-mono text-xs uppercase tracking-[0.2em] text-black/60">COMPLETE CATALOG</p>
+        </div>
+        <a href="/products" class="border border-black bg-transparent text-black font-mono uppercase tracking-widest text-sm py-3 px-6 hover:bg-black hover:text-white transition-colors" data-testid="view-all-button">
+          VIEW ALL
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#E5E5E5] border border-[#E5E5E5]">
+        <% allProducts.forEach(product => { %>
+          <a href="/products/<%= product._id %>" class="bg-white p-6 flex flex-col h-full group" data-testid="product-card">
+            <div class="product-image-hover mb-4">
+              <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-48 object-cover" data-testid="product-image">
+            </div>
+            <span class="bg-black text-white font-mono text-xs px-2 py-1 uppercase tracking-wider inline-block mb-2 w-fit" data-testid="product-category"><%= product.category %></span>
+            <h3 class="font-sans text-base font-medium mb-2 group-hover:text-accent transition-colors" data-testid="product-name"><%= product.name %></h3>
+            <span class="font-mono text-base font-bold mt-auto" data-testid="product-price">$<%= product.price %></span>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+  
+  <%- include('partials/footer') %>
+  
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

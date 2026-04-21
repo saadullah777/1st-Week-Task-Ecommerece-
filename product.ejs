@@ -1,0 +1,74 @@
+  <!-- Search Section -->
+  <section class="border-b border-[#E5E5E5] py-16 bg-[#F9F9F9]">
+    <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+      <h1 class="font-heading text-4xl md:text-5xl font-black tracking-tighter uppercase mb-8">ALL PRODUCTS</h1>
+      
+      <!-- Search Form -->
+      <form method="GET" action="/products" class="mb-8" data-testid="search-form">
+        <div class="flex items-center border-b-2 border-black max-w-3xl">
+          <input 
+            type="text" 
+            name="search" 
+            value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>" 
+            placeholder="SEARCH PRODUCTS..." 
+            class="bg-transparent py-4 px-0 text-2xl font-black placeholder:text-black/20 focus:outline-none w-full text-[#111111]"
+            data-testid="search-input"
+          >
+          <button type="submit" class="p-4 text-black hover:text-accent transition-colors" data-testid="search-submit">
+            <i data-lucide="search" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </form>
+      
+      <!-- Category Filter -->
+      <div class="flex flex-wrap gap-3">
+        <a href="/products" class="<%= (typeof categoryFilter === 'undefined' || !categoryFilter) ? 'bg-black text-white' : 'border border-black bg-transparent text-black hover:bg-black hover:text-white' %> font-mono uppercase tracking-widest text-xs py-2 px-4 transition-colors" data-testid="category-all">ALL</a>
+        <% if (typeof categories !== 'undefined' && categories) { %>
+          <% categories.forEach(category => { %>
+            <a href="/products?category=<%= category %>" class="<%= (typeof categoryFilter !== 'undefined' && categoryFilter === category) ? 'bg-black text-white' : 'border border-black bg-transparent text-black hover:bg-black hover:text-white' %> font-mono uppercase tracking-widest text-xs py-2 px-4 transition-colors" data-testid="category-filter-<%= category.toLowerCase() %>"><%= category %></a>
+          <% }); %>
+        <% } %>
+      </div>
+      
+      <% if (((typeof searchQuery !== 'undefined' && searchQuery) || (typeof categoryFilter !== 'undefined' && categoryFilter)) && typeof products !== 'undefined') { %>
+        <p class="mt-6 font-mono text-sm text-black/60" data-testid="search-results-count">
+          Found <%= products.length %> product<%= products.length !== 1 ? 's' : '' %>
+          <% if (typeof searchQuery !== 'undefined' && searchQuery) { %> for "<%= searchQuery %>"<% } %>
+          <% if (typeof categoryFilter !== 'undefined' && categoryFilter) { %> in <%= categoryFilter %><% } %>
+        </p>
+      <% } %>
+    </div>
+  </section>
+  
+  <!-- Products Grid -->
+  <section class="py-24">
+    <div class="max-w-screen-2xl mx-auto px-4 md:px-8">
+      <% if (typeof products !== 'undefined' && products && products.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#E5E5E5] border border-[#E5E5E5]">
+          <% products.forEach(product => { %>
+            <a href="/products/<%= product._id %>" class="bg-white p-6 md:p-8 flex flex-col h-full group" data-testid="product-card">
+              <div class="product-image-hover mb-6">
+                <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-64 object-cover" data-testid="product-image">
+              </div>
+              <div class="flex-1">
+                <span class="bg-black text-white font-mono text-xs px-2 py-1 uppercase tracking-wider inline-block mb-3" data-testid="product-category"><%= product.category %></span>
+                <h3 class="font-heading text-xl font-bold tracking-tight mb-2 group-hover:text-accent transition-colors" data-testid="product-name"><%= product.name %></h3>
+                <p class="text-sm text-black/60 mb-4" data-testid="product-description"><%= product.description ? (product.description.length > 80 ? product.description.substring(0, 80) + '...' : product.description) : 'No description available.' %></p>
+              </div>
+              <div class="flex items-center justify-between mt-auto pt-4 border-t border-[#E5E5E5]">
+                <span class="font-mono text-lg font-bold tracking-tight" data-testid="product-price">$<%= typeof product.price === 'number' ? product.price.toFixed(2) : product.price %></span>
+                <span class="font-mono text-xs text-black/60" data-testid="product-stock">STOCK: <%= product.stock %></span>
+              </div>
+            </a>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="text-center py-24" data-testid="no-products-message">
+          <i data-lucide="package-x" class="w-16 h-16 mx-auto mb-6 text-black/20"></i>
+          <h2 class="font-heading text-2xl font-black uppercase mb-2">NO PRODUCTS FOUND</h2>
+          <p class="text-black/60 mb-6">Try adjusting your search or filter criteria</p>
+          <a href="/products" class="border border-black bg-transparent text-black font-mono uppercase tracking-widest text-sm py-3 px-6 hover:bg-black hover:text-white transition-colors inline-block" data-testid="clear-filters">CLEAR FILTERS</a>
+        </div>
+      <% } %>
+    </div>
+  </section>
